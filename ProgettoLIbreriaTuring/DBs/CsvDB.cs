@@ -1,4 +1,5 @@
 ﻿using ProgettoLIbreriaTuring.Models;
+using ProgettoLIbreriaTuring.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +24,7 @@ namespace ProgettoLIbreriaTuring.DBs
                 while (!sr.EndOfStream)
                 {
                     string line = sr.ReadLine();
-                    Person personFromCSV = Person.FromCSV(line);
+                    Person personFromCSV = PersonUtils.FromCSV(line);
 
                     if (personFromCSV != null)
                         pc.Add(personFromCSV);
@@ -33,20 +34,45 @@ namespace ProgettoLIbreriaTuring.DBs
             return pc;
         }
 
+        public void Add(Person p)
+        {
+            using (StreamWriter sw = new StreamWriter(sourceFile, true))
+            {
+                sw.WriteLine(p.ToCSV());
+            }
+        }
+
+        public void Delete(Person p)
+        {
+            PersonCollection pc = Load();
+            pc.Remove(p);
+
+            Save(pc);
+        }
+
+        public void Update(int idx, Person p)
+        {
+            PersonCollection pc = Load();
+            pc.RemoveAt(idx);
+            pc.Insert(idx, p);
+
+            Save(pc);
+        }
+
         public void Save(PersonCollection pc)
         {
             using (StreamWriter sw = new StreamWriter(sourceFile, false))
             {
-                foreach (Person person in pc)
+                foreach (Person p in pc)
                 {
-                    sw.WriteLine(person.ToCSV());
+                    sw.WriteLine(p.ToCSV());
                 }
             }
         }
 
-        public void Update(int index, Person person)
+        public int GetMaxIndex()
         {
-            
+            return 10;
         }
     }
 }

@@ -13,19 +13,19 @@ namespace ProgettoLIbreriaTuring.Dialogs
     public partial class dlgCreateOrEditPerson : Form
     {
         public Person Person;
-        public int EditIndex;
 
-        public dlgCreateOrEditPerson(Person p = null, int editIndex = 0)
+        public dlgCreateOrEditPerson(Person p = null)
         {
             InitializeComponent();
 
             if (p != null)
             {
                 this.Text = "Modifica contatto";
-                LoadPerson(p);
+                Person = p;
+                LoadPerson();
             }
-
-            EditIndex = editIndex;
+            else
+                Person = new Person();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -33,24 +33,22 @@ namespace ProgettoLIbreriaTuring.Dialogs
             if (!IsFormValid())
                 return;
 
-            Person p = new Person();
-            p.Name = txtName.Text;
-            p.Surname = txtSurname.Text;
-            p.Address = txtAddress.Text;
-            p.PhoneNumber = txtPhone.Text;
-            p.Age = (int)txtAge.Value;
+            Person.Name = txtName.Text;
+            Person.Surname = txtSurname.Text;
+            Person.Address = txtAddress.Text;
+            Person.PhoneNumber = txtPhone.Text;
+            Person.Age = (int)txtAge.Value;
 
-            Person = p;
             Close();
         }
 
-        void LoadPerson(Person p)
+        void LoadPerson()
         {
-            txtName.Text = p.Name;
-            txtSurname.Text = p.Surname;
-            txtAddress.Text = p.Address;
-            txtPhone.Text = p.PhoneNumber;
-            txtAge.Value = p.Age;
+            txtName.Text = Person.Name;
+            txtSurname.Text = Person.Surname;
+            txtAddress.Text = Person.Address;
+            txtPhone.Text = Person.PhoneNumber;
+            txtAge.Value = Person.Age;
         }
 
         private bool IsFormValid()

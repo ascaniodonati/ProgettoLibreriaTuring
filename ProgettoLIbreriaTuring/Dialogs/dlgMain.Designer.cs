@@ -32,7 +32,7 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.dgrPeople = new System.Windows.Forms.DataGridView();
-            this.btnChangeDB = new System.Windows.Forms.Button();
+            this.cmbDbType = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgrPeople)).BeginInit();
             this.SuspendLayout();
             // 
@@ -85,23 +85,25 @@
             this.dgrPeople.Size = new System.Drawing.Size(782, 412);
             this.dgrPeople.TabIndex = 3;
             // 
-            // btnChangeDB
+            // cmbDbType
             // 
-            this.btnChangeDB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnChangeDB.Location = new System.Drawing.Point(12, 445);
-            this.btnChangeDB.Name = "btnChangeDB";
-            this.btnChangeDB.Size = new System.Drawing.Size(200, 35);
-            this.btnChangeDB.TabIndex = 4;
-            this.btnChangeDB.Text = "Passa al database MySQL";
-            this.btnChangeDB.UseVisualStyleBackColor = true;
-            this.btnChangeDB.Click += new System.EventHandler(this.btnChangeDB_Click);
+            this.cmbDbType.FormattingEnabled = true;
+            this.cmbDbType.Items.AddRange(new object[] {
+            "Database CSV",
+            "Database a cartelle",
+            "Database MySQL"});
+            this.cmbDbType.Location = new System.Drawing.Point(13, 451);
+            this.cmbDbType.Name = "cmbDbType";
+            this.cmbDbType.Size = new System.Drawing.Size(247, 24);
+            this.cmbDbType.TabIndex = 4;
+            this.cmbDbType.SelectedIndexChanged += new System.EventHandler(this.cmbDbType_SelectedIndexChanged);
             // 
             // dlgMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(807, 492);
-            this.Controls.Add(this.btnChangeDB);
+            this.Controls.Add(this.cmbDbType);
             this.Controls.Add(this.dgrPeople);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnEdit);
@@ -119,7 +121,7 @@
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.DataGridView dgrPeople;
-        private System.Windows.Forms.Button btnChangeDB;
+        private System.Windows.Forms.ComboBox cmbDbType;
     }
 }
 

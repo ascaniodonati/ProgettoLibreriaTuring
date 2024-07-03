@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -7,6 +8,7 @@ namespace ProgettoLIbreriaTuring.Models
 {
     public class Person
     {
+        public int Idx { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Address { get; set; }
@@ -18,29 +20,19 @@ namespace ProgettoLIbreriaTuring.Models
             return $"{Name};{Surname};{Address};{PhoneNumber};{Age}";
         }
 
-        public static Person FromCSV(string csvString)
+        public override bool Equals(object obj)
         {
-            string[] csvSplitted = csvString.Split(';');
-
-            //Stringa non valida
-            if (csvSplitted.Length < 5)
-                throw new FormatException("La stringa contiene meno di 5 proprietà");
-
-            Person p = new Person();
-            p.Name = csvSplitted[0];
-            p.Surname = csvSplitted[1];
-            p.Address = csvSplitted[2];
-            p.PhoneNumber = csvSplitted[3];
-
-            if (!int.TryParse(csvSplitted[4], out int age))
+            if (obj is Person p)
             {
-                throw new ArgumentException("La proprietà \"Età\" deve essere una cifra numerica");
+                return
+                    Name == p.Name &&
+                    Surname == p.Surname &&
+                    Address == p.Address &&
+                    PhoneNumber == p.PhoneNumber &&
+                    Age == p.Age;
             }
-            else
-            {
-                p.Age = age;
-                return p;
-            }
+
+            return base.Equals(obj);
         }
     }
 }

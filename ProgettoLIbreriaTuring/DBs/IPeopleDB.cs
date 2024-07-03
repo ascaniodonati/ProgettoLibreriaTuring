@@ -9,7 +9,9 @@ namespace ProgettoLIbreriaTuring.DBs
     public interface IPeopleDB
     {
         PersonCollection Load();
-        void Save(PersonCollection pc);
-        void Update(int index, Person person);
+        void Add(Person p);
+        void Delete(Person p);
+        void Update(int idx, Person p);
+        int GetMaxIndex();
     }
 }

@@ -16,13 +16,16 @@ namespace ProgettoLIbreriaTuring
     {
         IPeopleDB DB;
         PersonCollection people;
+        User loggedUser;
 
-        public dlgMain()
+        public dlgMain(User _loggedUser)
         {
             InitializeComponent();
 
-            DB = new CsvDB();
+            cmbDbType.SelectedIndex = 0;
             LoadPeopleOnGridView();
+
+            loggedUser = _loggedUser;
         }
 
         void LoadPeopleOnGridView()
@@ -46,9 +49,9 @@ namespace ProgettoLIbreriaTuring
             return dlg.Person;
         }
 
-        Person EditPersonFromDialog(int index, Person p)
+        Person EditPersonFromDialog(Person p)
         {
-            dlgCreateOrEditPerson dlg = new dlgCreateOrEditPerson(p, index);
+            dlgCreateOrEditPerson dlg = new dlgCreateOrEditPerson(p);
             dlg.ShowDialog();
 
             return dlg.Person;
@@ -60,7 +63,7 @@ namespace ProgettoLIbreriaTuring
             if (createdPerson != null)
             {
                 people.Add(createdPerson);
-                DB.Save(people);
+                DB.Add(createdPerson);
 
                 UpdateGridView();
             }
@@ -76,7 +79,7 @@ namespace ProgettoLIbreriaTuring
             if (selectedRow[0].DataBoundItem is Person p)
             {
                 int index = selectedRow[0].Index;
-                Person personEdited = EditPersonFromDialog(index, p);
+                Person personEdited = EditPersonFromDialog(p);
 
                 if (personEdited != null)
                 {
@@ -84,7 +87,7 @@ namespace ProgettoLIbreriaTuring
                     people.Insert(index, personEdited);
                     UpdateGridView();
 
-                    DB.Save(people);
+                    DB.Update(index, personEdited);
                 }
             }
         }
@@ -101,26 +104,32 @@ namespace ProgettoLIbreriaTuring
                 people.Remove(p);
                 UpdateGridView();
 
-                DB.Save(people);
+                DB.Delete(p);
             }
         }
 
-        private void btnChangeDB_Click(object sender, EventArgs e)
+        private void cmbDbType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (DB.GetType() == typeof(CsvDB))
+            switch (cmbDbType.SelectedIndex)
             {
-                DB = new MySqlDB();
-                LoadPeopleOnGridView();
-
-                btnChangeDB.Text = "Passa al database CSV";
+                case 0:
+                    {
+                        DB = new CsvDB();
+                        break;
+                    }
+                case 1:
+                    {
+                        DB = new FolderDB();
+                        break;
+                    }
+                case 2:
+                    {
+                        DB = new MySqlDB();
+                        break;
+                    }
             }
-            else if (DB.GetType() == typeof(MySqlDB))
-            {
-                DB = new CsvDB();
-                LoadPeopleOnGridView();
 
-                btnChangeDB.Text = "Passa al database MySQL";
-            }
+            LoadPeopleOnGridView();
         }
     }
 }
